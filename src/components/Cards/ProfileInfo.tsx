@@ -1,3 +1,5 @@
+import { HiOutlineLogout } from "react-icons/hi";
+
 type ProfileInfoProps = {
   name: string;
   onLogout: () => void;
@@ -15,9 +17,14 @@ const ProfileInfo = ({ name, onLogout }: ProfileInfoProps) => {
       <span className="uppercase bg-blue-700 w-8 h-8 flex items-center justify-center text-white rounded-full">
         {handleInitials(name)}
       </span>
-      <div className="flex flex-col text-sm">
-        <p className="capitalize">{name}</p>
-        <button onClick={onLogout}>Logout</button>
+      <div className="flex items-center gap-x-3">
+        <p className="capitalize text-[15px]">{name}</p>
+        <button
+          onClick={onLogout}
+          className="bg-red-500 flex items-center justify-center text-white text-xl p-2 rounded-md"
+        >
+          <HiOutlineLogout />
+        </button>
       </div>
     </div>
   );
