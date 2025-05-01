@@ -28,6 +28,8 @@ const SignUp = () => {
     }
 
     setError("");
+
+    // Sign Up API Call
   };
   return (
     <>
