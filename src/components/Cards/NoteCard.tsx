@@ -23,7 +23,7 @@ const NoteCard = ({
   onPinNote,
 }: NoteCardProps) => {
   return (
-    <section className="border rounded p-4  bg-white hover:shadow-xl w-md transition-all ease-in-out">
+    <section className="border rounded-md p-4 bg-white hover:shadow-2xl transition-all ease-in-out">
       <div
         className="flex items-center justify-between
       "
@@ -45,8 +45,11 @@ const NoteCard = ({
       <p className="text-wrap capitalize text-xs text-slate-600 mt-2">
         {content?.slice(0, 60)}
       </p>
-      <div className="flex items-center justify-between">
-        <div className="text-xs text-slate-100 rounded-full bg-slate-800">
+      <div className="flex items-center justify-between mt-2">
+        <div
+          className="text-xs text-slate-100 p-1 
+         rounded-full bg-slate-800"
+        >
           {tags}
         </div>
 
