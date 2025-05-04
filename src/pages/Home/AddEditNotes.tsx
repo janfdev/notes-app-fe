@@ -1,6 +1,6 @@
 const AddEditNotes = () => {
   return (
-    <section className="w-md">
+    <section className="">
       <div className="flex flex-col gap-2">
         <label className="input-label">TITLE</label>
         <input
@@ -18,6 +18,17 @@ const AddEditNotes = () => {
           rows={10}
         />
       </div>
+
+      <div className="mt-3">
+        <label className="input-label">TAGS</label>
+      </div>
+
+      <button
+        className="bg-blue-500 w-full text-white p-3 font-medium mt-5 "
+        onClick={() => {}}
+      >
+        ADD
+      </button>
     </section>
   );
 };
