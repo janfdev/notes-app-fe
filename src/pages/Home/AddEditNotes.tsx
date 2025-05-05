@@ -27,7 +27,7 @@ const AddEditNotes = () => {
       </div>
 
       <button
-        className="bg-blue-500 w-full text-white p-3 font-medium mt-5 "
+        className="bg-blue-500 w-full rounded-md text-white p-3 font-medium mt-5 "
         onClick={() => {}}
       >
         ADD
