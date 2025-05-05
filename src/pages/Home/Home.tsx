@@ -2,8 +2,15 @@ import { MdAdd } from "react-icons/md";
 import NoteCard from "../../components/Cards/NoteCard";
 import Navbar from "../../components/Navbar";
 import AddEditNotes from "./AddEditNotes";
+import { useState } from "react";
+import Modal from "react-modal";
 
 const Home = () => {
+  const [openAddEditModal, setOpenAddEditModal] = useState({
+    isShow: false,
+    type: "add",
+    data: null,
+  });
   return (
     <>
       <Navbar />
@@ -18,8 +25,7 @@ const Home = () => {
             onEdit={() => {}}
             onDelete={() => {}}
             onPinNote={() => {}}
-            content="meeting with the team
-         lorem basdkadjshdjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"
+            content="meeting with the team"
           />
         </div>
       </div>
@@ -30,6 +36,18 @@ const Home = () => {
       >
         <MdAdd className="text-[32px] text-white" />
       </button>
+
+      <Modal
+        isOpen={openAddEditModal.isShow}
+        onRequestClose={() => {}}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0,0,0,0.2)",
+          },
+        }}
+        contentLabel=""
+        className=""
+      />
 
       <AddEditNotes />
     </>
