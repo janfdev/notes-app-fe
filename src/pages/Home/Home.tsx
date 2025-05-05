@@ -48,7 +48,7 @@ const Home = () => {
           },
         }}
         contentLabel=""
-        className=""
+        className="w-[40%] max-h-[90%] bg-white rounded-md mx-auto mt-14 p-5 overflow-hidden"
       >
         <AddEditNotes />
       </Modal>

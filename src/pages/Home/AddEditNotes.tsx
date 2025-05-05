@@ -1,3 +1,5 @@
+import TagInput from "../../components/Input/TagInput";
+
 const AddEditNotes = () => {
   return (
     <section className="">
@@ -5,7 +7,7 @@ const AddEditNotes = () => {
         <label className="input-label">TITLE</label>
         <input
           type="text"
-          className="text-2xl text-slate-950 outline-none placeholder:text-lg"
+          className="text-lg text-slate-950 outline-none border rounded-md px-4 py-2"
           placeholder="Go to Gym at 5 PM"
         />
       </div>
@@ -21,6 +23,7 @@ const AddEditNotes = () => {
 
       <div className="mt-3">
         <label className="input-label">TAGS</label>
+        <TagInput />
       </div>
 
       <button
