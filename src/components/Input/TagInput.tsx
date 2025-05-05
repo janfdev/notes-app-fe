@@ -2,8 +2,8 @@ import { useState } from "react";
 import { MdAdd, MdClose } from "react-icons/md";
 
 type TagInputProps = {
-  tags: string;
-  setTags: () => void;
+  tags: string[];
+  setTags: (tags: string[]) => void;
 };
 
 const TagInput = ({ tags, setTags }: TagInputProps) => {
@@ -13,10 +13,12 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
     setInputValue(e.target.value);
   };
 
-
   const addNewTag = () => {
-    
-  }
+    if (inputValue.trim() !== "") {
+      setTags([...tags, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
   return (
     <div>
       <div className="flex items-center gap-4 mt-3">
