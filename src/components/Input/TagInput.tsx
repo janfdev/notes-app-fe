@@ -25,14 +25,26 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
       addNewTag();
     }
   };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
   return (
     <div>
       {tags?.length > 0 && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap mt-2">
           {tags.map((tag, index) => (
-            <span key={index} className="">
+            <span
+              key={index}
+              className="relative bg-slate-100 px-3 py-1 rounded-md"
+            >
               # {tag}
-              <button onClick={() => {}}>
+              <button
+                onClick={() => {
+                  handleRemoveTag(tag);
+                }}
+                className="bg-red-500 absolute -right-2 -top-1 text-white w-4 h-4 flex items-center justify-center rounded-full cursor-pointer"
+              >
                 <MdClose />
               </button>
             </span>
