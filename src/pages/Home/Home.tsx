@@ -48,9 +48,13 @@ const Home = () => {
           },
         }}
         contentLabel=""
-        className="w-[40%] max-h-[90%] bg-white rounded-md mx-auto mt-14 p-5 overflow-hidden"
+        className="w-[40%] max-h-[90%] rounded-md mx-auto mt-14 p-5 overflow-hidden"
       >
-        <AddEditNotes />
+        <AddEditNotes
+          onClose={() => {
+            setOpenAddEditModal({ isShow: false, type: "add", data: null });
+          }}
+        />
       </Modal>
     </>
   );
