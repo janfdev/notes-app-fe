@@ -3,13 +3,47 @@ import TagInput from "../../components/Input/TagInput";
 import { useState } from "react";
 
 type EditNotesProps = {
+  noteData: NoteData;
+  type: "add" | "edit";
   onClose: () => void;
 };
 
-const AddEditNotes = ({ onClose }: EditNotesProps) => {
+const AddEditNotes = ({ noteData, type, onClose }: EditNotesProps) => {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
+
+  const [error, setError] = useState<string | null>(null);
+
+  // Add Note
+  const addNewNote = async () => {
+
+  }
+
+  // Edit Note
+  const editNote = async () => {
+    
+  }
+
+  const handleAddNote = () => {
+    if (!title) {
+      setError("Please enter a title");
+      return;
+    }
+
+    if (!content) {
+      setError("Please enter a content");
+      return;
+    }
+
+    setError("");
+
+    if (type === "edit") {
+      editNote();
+    } else {
+      addNewNote();
+    }
+  };
   return (
     <section className="relative bg-white p-6 rounded-md shadow-md w-full max-w-md mx-auto">
       <button
@@ -47,9 +81,13 @@ const AddEditNotes = ({ onClose }: EditNotesProps) => {
           <TagInput tags={tags} setTags={setTags} />
         </div>
 
+        {error && <p className="text-red-500 text-xs pt-1">{error}</p>}
+
         <button
           className="bg-blue-500 w-full rounded-md text-white p-3 font-medium"
-          onClick={() => {}}
+          onClick={() => {
+            handleAddNote();
+          }}
         >
           ADD
         </button>
