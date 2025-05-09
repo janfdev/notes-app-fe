@@ -2,6 +2,12 @@ import { MdClose } from "react-icons/md";
 import TagInput from "../../components/Input/TagInput";
 import { useState } from "react";
 
+type NoteData = {
+  id: number;
+  title: string;
+  content: string;
+};
+
 type EditNotesProps = {
   noteData: NoteData;
   type: "add" | "edit";
@@ -16,14 +22,10 @@ const AddEditNotes = ({ noteData, type, onClose }: EditNotesProps) => {
   const [error, setError] = useState<string | null>(null);
 
   // Add Note
-  const addNewNote = async () => {
-
-  }
+  const addNewNote = async () => {};
 
   // Edit Note
-  const editNote = async () => {
-    
-  }
+  const editNote = async () => {};
 
   const handleAddNote = () => {
     if (!title) {
