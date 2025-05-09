@@ -6,6 +6,7 @@ type NoteData = {
   id: number;
   title: string;
   content: string;
+  tags: string[];
 };
 
 type EditNotesProps = {
