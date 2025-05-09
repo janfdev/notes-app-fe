@@ -45,9 +45,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {error && (
-                <p className="text-red-500 text-sm capitalize">{error}</p>
-              )}
+              
               <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
