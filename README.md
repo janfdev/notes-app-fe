@@ -1,4 +1,7 @@
 # Notes App MERN Stack
 
-## Masih tahap Develop
+## Front End Notes App
 
+### Stack :
+
+- React
