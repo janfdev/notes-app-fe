@@ -5,3 +5,4 @@
 ### Stack :
 
 - React
+- JavaScript
