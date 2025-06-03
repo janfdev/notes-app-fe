@@ -1,13 +1,17 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Navbar from "../../components/Navbar";
 import PasswordInput from "../../components/Input/PasswordInput";
 import { useState } from "react";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { AxiosError } from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,6 +29,30 @@ const Login = () => {
     setError("");
 
     // Login API Call
+    try {
+      const response = await axiosInstance.post("/login", {
+        email: email,
+        password: password,
+      });
+
+      // Handle successfull login
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("Terjadi kesalahan. Silakan coba lagi.");
+      }
+    }
   };
   return (
     <>
@@ -45,7 +73,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              
+
               <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
