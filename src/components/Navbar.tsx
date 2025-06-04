@@ -3,7 +3,16 @@ import { useState } from "react";
 import ProfileInfo from "./Cards/ProfileInfo";
 import SearchBar from "./SearchBar/SearchBar";
 
-const Navbar = () => {
+type NavbarProps = {
+  userInfo: UserInfo
+}
+
+type UserInfo = {
+  firstName: string;
+  email: string;
+};
+
+const Navbar = ({ userInfo }: NavbarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -28,7 +37,11 @@ const Navbar = () => {
         handleSearch={handleSearch}
         onClearSearch={handleClearSearch}
       />
-      <ProfileInfo name="john doe" onLogout={handleLogout} />
+      <ProfileInfo
+        userInfo={userInfo}
+        name={userInfo?.firstName}
+        onLogout={handleLogout}
+      />
     </nav>
   );
 };

@@ -1,12 +1,12 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 import { BASE_URL } from "./constants";
 
-const axiosInstance: AxiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 5000,
   headers: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 axiosInstance.interceptors.request.use(
