@@ -4,7 +4,7 @@ import PasswordInput from "../../components/Input/PasswordInput";
 import { useState } from "react";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
-import { AxiosError } from "axios";
+// import { AxiosError } from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -40,18 +40,24 @@ const Login = () => {
         localStorage.setItem("accessToken", response.data.accessToken);
         navigate("/dashboard");
       }
-    } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
-
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        setError(error.response.data.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
       } else {
-        setError("Terjadi kesalahan. Silakan coba lagi.");
+        setError("An unexpected error occurred. Please try again.");
       }
+      // const error = err as AxiosError<{ message: string }>;
+
+      // if (
+      //   error.response &&
+      //   error.response.data &&
+      //   error.response.data.message
+      // ) {
+      //   setError(error.response.data.message);
+      //   console.log(error.response.data.message);
+      // } else {
+      //   setError("An unexpected error occurred. Please try again.");
+      // }
     }
   };
   return (
