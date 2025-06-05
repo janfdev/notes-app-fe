@@ -2,14 +2,10 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import ProfileInfo from "./Cards/ProfileInfo";
 import SearchBar from "./SearchBar/SearchBar";
+import { UserInfo } from "../utils/types";
 
 type NavbarProps = {
-  userInfo: UserInfo
-}
-
-type UserInfo = {
-  firstName: string;
-  email: string;
+  userInfo: UserInfo | null;
 };
 
 const Navbar = ({ userInfo }: NavbarProps) => {
@@ -17,6 +13,7 @@ const Navbar = ({ userInfo }: NavbarProps) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -28,7 +25,6 @@ const Navbar = ({ userInfo }: NavbarProps) => {
   return (
     <nav className="bg-white flex items-center justify-between px-6 py-2 drop-shadow">
       <h2 className="text-xl font-medium text-black py-2">Notes</h2>
-
       <SearchBar
         value={searchQuery}
         onChange={({ target }) => {
@@ -37,11 +33,11 @@ const Navbar = ({ userInfo }: NavbarProps) => {
         handleSearch={handleSearch}
         onClearSearch={handleClearSearch}
       />
-      <ProfileInfo
-        userInfo={userInfo}
-        name={userInfo?.firstName}
-        onLogout={handleLogout}
-      />
+      {userInfo ? (
+        <ProfileInfo userInfo={userInfo} onLogout={handleLogout} />
+      ) : (
+        <div className="flex items-center gap-x-3"></div>
+      )}{" "}
     </nav>
   );
 };

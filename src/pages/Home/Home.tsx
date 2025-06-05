@@ -7,18 +7,8 @@ import Modal from "react-modal";
 import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
+import { UserInfo } from "../../utils/types";
 
-Modal.setAppElement("#root");
-
-// ✅ Tipe User
-interface User {
-  _id: string;
-  fullName: string;
-  email: string;
-  // tambahkan properti lain jika perlu
-}
-
-// ✅ Tipe state modal
 type ModalState = {
   isShow: boolean;
   type: "add" | "edit";
@@ -32,13 +22,13 @@ const Home: React.FC = () => {
     data: null
   });
 
-  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const navigate = useNavigate();
 
-  const getUserInfo = async (): Promise<void> => {
+  const getUserInfo = async () => {
     try {
-      const response = await axiosInstance.get<{ user: User }>("/get-user");
+      const response = await axiosInstance.get("/get-user");
       if (response.data && response.data.user) {
         setUserInfo(response.data.user);
       }
