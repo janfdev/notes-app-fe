@@ -8,6 +8,16 @@ import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { UserInfo } from "../../utils/types";
+import moment from "moment";
+
+type Note = {
+  _id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  isPinned: boolean;
+  createdOn: string;
+};
 
 type ModalState = {
   isShow: boolean;
@@ -22,10 +32,13 @@ const Home: React.FC = () => {
     data: null
   });
 
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
+
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const navigate = useNavigate();
 
+  // Get user info
   const getUserInfo = async () => {
     try {
       const response = await axiosInstance.get("/get-user");
@@ -48,7 +61,21 @@ const Home: React.FC = () => {
     }
   };
 
+  // Get all notes
+  const getAllNotes = async () => {
+    try {
+      const response = await axiosInstance.get("/get-all-notes");
+
+      if (response.data && response.data.notes) {
+        setAllNotes(response.data.notes);
+      }
+    } catch (error) {
+      console.log("An uxpected error occurred. Please try again", error);
+    }
+  };
+
   useEffect(() => {
+    getAllNotes();
     getUserInfo();
   }, []); // ✅ tambahkan dependency array
 
@@ -58,16 +85,19 @@ const Home: React.FC = () => {
 
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-8">
-          <NoteCard
-            title="Meeting on Office"
-            date="3 May 2025"
-            tags={["#Meeting"]}
-            isPinned={true}
-            onEdit={() => {}}
-            onDelete={() => {}}
-            onPinNote={() => {}}
-            content="meeting with the team"
-          />
+          {allNotes.map((item, index) => (
+            <NoteCard
+              key={item._id}
+              title={item.title}
+              content={item.content}
+              date={item.createdOn}
+              tags={item.tags}
+              isPinned={item.isPinned}
+              onEdit={() => {}}
+              onDelete={() => {}}
+              onPinNote={() => {}}
+            />
+          ))}
         </div>
       </div>
 

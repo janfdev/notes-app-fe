@@ -43,20 +43,23 @@ const SignUp = () => {
       });
 
       // Handle successfull registration
+      if (response.data && response.data.error) {
+        setError(response.data.message);
+        return;
+      }
+
       if (response.data && response.data.accessToken) {
-        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("token", response.data.accessToken);
         navigate("/dashboard");
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
-
       if (
         error.response &&
         error.response.data &&
         error.response.data.message
       ) {
         setError(error.response.data.message);
-        console.log(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");
       }

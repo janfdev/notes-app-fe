@@ -23,7 +23,9 @@ const AddEditNotes = ({ noteData, type, onClose }: EditNotesProps) => {
   const [error, setError] = useState<string | null>(null);
 
   // Add Note
-  const addNewNote = async () => {};
+  const addNewNote = async () => {
+    
+  };
 
   // Edit Note
   const editNote = async () => {};
