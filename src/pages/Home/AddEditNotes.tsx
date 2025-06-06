@@ -1,9 +1,11 @@
 import { MdClose } from "react-icons/md";
 import TagInput from "../../components/Input/TagInput";
 import { useState } from "react";
+import { AxiosError } from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 type NoteData = {
-  id: number;
+  _id: string;
   title: string;
   content: string;
   tags: string[];
@@ -13,22 +15,71 @@ type EditNotesProps = {
   noteData: NoteData;
   type: "add" | "edit";
   onClose: () => void;
+  getAllNotes: () => void;
 };
 
-const AddEditNotes = ({ noteData, type, onClose }: EditNotesProps) => {
-  const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
+const AddEditNotes = ({
+  noteData,
+  getAllNotes,
+  type,
+  onClose
+}: EditNotesProps) => {
+  const [title, setTitle] = useState<string>(noteData?.title || "");
+  const [content, setContent] = useState<string>(noteData?.content || "");
+  const [tags, setTags] = useState<string[]>(noteData?.tags || []);
 
   const [error, setError] = useState<string | null>(null);
 
   // Add Note
   const addNewNote = async () => {
-    
+    try {
+      const response = await axiosInstance.post("/add-note", {
+        title,
+        content,
+        tags
+      });
+
+      if (response.data && response.data.note) {
+        getAllNotes();
+        onClose();
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      }
+    }
   };
 
   // Edit Note
-  const editNote = async () => {};
+  const editNote = async () => {
+    const noteId = noteData._id;
+    try {
+      const response = await axiosInstance.put(`/edit-note/${noteId}`, {
+        title,
+        content,
+        tags
+      });
+
+      if (response.data && response.data.note) {
+        getAllNotes();
+        onClose();
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      }
+    }
+  };
 
   const handleAddNote = () => {
     if (!title) {
@@ -89,12 +140,12 @@ const AddEditNotes = ({ noteData, type, onClose }: EditNotesProps) => {
         {error && <p className="text-red-500 text-xs pt-1">{error}</p>}
 
         <button
-          className="bg-blue-500 w-full rounded-md text-white p-3 font-medium"
+          className="bg-blue-500 w-full cursor-pointer rounded-md text-white p-3 font-medium"
           onClick={() => {
             handleAddNote();
           }}
         >
-          ADD
+          {type === "edit" ? "Update Note" : "Add Note"}
         </button>
       </div>
     </section>

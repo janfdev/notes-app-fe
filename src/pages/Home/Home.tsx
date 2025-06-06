@@ -8,7 +8,6 @@ import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { UserInfo } from "../../utils/types";
-import moment from "moment";
 
 type Note = {
   _id: string;
@@ -22,7 +21,7 @@ type Note = {
 type ModalState = {
   isShow: boolean;
   type: "add" | "edit";
-  data: null;
+  data: Note | null;
 };
 
 const Home: React.FC = () => {
@@ -37,6 +36,15 @@ const Home: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const navigate = useNavigate();
+
+  // Handle Edit
+  const handleEdit = (noteDetails: Note) => {
+    setOpenAddEditModal({
+      isShow: true,
+      data: noteDetails,
+      type: "edit"
+    });
+  };
 
   // Get user info
   const getUserInfo = async () => {
@@ -85,7 +93,7 @@ const Home: React.FC = () => {
 
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-8">
-          {allNotes.map((item, index) => (
+          {allNotes.map((item) => (
             <NoteCard
               key={item._id}
               title={item.title}
@@ -93,7 +101,9 @@ const Home: React.FC = () => {
               date={item.createdOn}
               tags={item.tags}
               isPinned={item.isPinned}
-              onEdit={() => {}}
+              onEdit={() => {
+                handleEdit(item);
+              }}
               onDelete={() => {}}
               onPinNote={() => {}}
             />
@@ -129,6 +139,7 @@ const Home: React.FC = () => {
           onClose={() =>
             setOpenAddEditModal({ isShow: false, type: "add", data: null })
           }
+          getAllNotes={getAllNotes}
         />
       </Modal>
     </>
