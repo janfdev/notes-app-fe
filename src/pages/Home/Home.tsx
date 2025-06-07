@@ -50,6 +50,8 @@ const Home: React.FC = () => {
 
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
+  const [, setIsSearch] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   // Handle show/close toast
@@ -133,6 +135,23 @@ const Home: React.FC = () => {
     }
   };
 
+  // Search for a note
+  const onSearchNote = async (query: string) => {
+    try {
+      const response = await axiosInstance.get("/search-notes", {
+        params: { query }
+      });
+
+      if (response.data && response.data.notes) {
+        setIsSearch(true);
+        setAllNotes(response.data.notes);
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getAllNotes();
     getUserInfo();
@@ -140,7 +159,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Navbar userInfo={userInfo} />
+      <Navbar userInfo={userInfo} onSearchNote={onSearchNote} />
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (

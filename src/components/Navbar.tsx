@@ -6,10 +6,11 @@ import { UserInfo } from "../utils/types";
 
 type NavbarProps = {
   userInfo: UserInfo | null;
+  onSearchNote: (query: string) => void;
 };
 
-const Navbar = ({ userInfo }: NavbarProps) => {
-  const [searchQuery, setSearchQuery] = useState("");
+const Navbar = ({ userInfo, onSearchNote }: NavbarProps) => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -17,7 +18,11 @@ const Navbar = ({ userInfo }: NavbarProps) => {
     navigate("/login");
   };
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    if (searchQuery) {
+      onSearchNote(searchQuery);
+    }
+  };
 
   const handleClearSearch = () => {
     setSearchQuery("");
