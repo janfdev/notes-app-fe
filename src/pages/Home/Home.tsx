@@ -9,7 +9,8 @@ import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { UserInfo } from "../../utils/types";
 import Toast from "../../components/ToastMessage/Toast";
-import EmptyCard from "../../components/EmptyCard";
+import EmptyCard from "../../components/EmptyCard/EmptyCard";
+import noteEmpty from "../../assets/image/note-empty.svg";
 
 type Note = {
   _id: string;
@@ -163,7 +164,10 @@ const Home: React.FC = () => {
             ))}
           </div>
         ) : (
-          <EmptyCard />
+          <EmptyCard
+            imgSrc={noteEmpty}
+            message={`Start creating your first note! Click the 'Add' button to jot down your toughts, ideas, and reminders, Let's get started!`}
+          />
         )}
       </div>
 
