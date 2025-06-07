@@ -53,6 +53,8 @@ const Home: React.FC = () => {
 
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+
   const navigate = useNavigate();
 
   // Handle show/close toast
@@ -148,15 +150,7 @@ const Home: React.FC = () => {
       );
 
       if (response.data && !response.data.error) {
-        // Langsung update state lokal
-        setAllNotes((prevNotes) =>
-          prevNotes.map((note) =>
-            note._id === noteData._id
-              ? { ...note, isPinned: !noteData.isPinned }
-              : note
-          )
-        );
-
+        setRefreshTrigger((prev) => prev + 1);
         showToastMessage("Note updated successfully", "edit");
       }
     } catch (err) {
@@ -190,7 +184,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     getAllNotes();
     getUserInfo();
-  }, []); // ✅ tambahkan dependency array
+  }, [refreshTrigger]); // ✅ tambahkan dependency array
 
   return (
     <>
