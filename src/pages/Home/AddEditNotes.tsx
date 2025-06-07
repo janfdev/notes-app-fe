@@ -12,17 +12,19 @@ type NoteData = {
 };
 
 type EditNotesProps = {
-  noteData: NoteData;
+  noteData?: NoteData | null;
   type: "add" | "edit";
   onClose: () => void;
   getAllNotes: () => void;
+  showToastMessage: (message: string, type: "add" | "edit" | "delete") => void;
 };
 
 const AddEditNotes = ({
   noteData,
   getAllNotes,
   type,
-  onClose
+  onClose,
+  showToastMessage
 }: EditNotesProps) => {
   const [title, setTitle] = useState<string>(noteData?.title || "");
   const [content, setContent] = useState<string>(noteData?.content || "");
@@ -40,6 +42,7 @@ const AddEditNotes = ({
       });
 
       if (response.data && response.data.note) {
+        showToastMessage("Note Added Successfully", "add");
         getAllNotes();
         onClose();
       }
@@ -57,7 +60,7 @@ const AddEditNotes = ({
 
   // Edit Note
   const editNote = async () => {
-    const noteId = noteData._id;
+    const noteId = noteData?._id;
     try {
       const response = await axiosInstance.put(`/edit-note/${noteId}`, {
         title,
@@ -66,6 +69,7 @@ const AddEditNotes = ({
       });
 
       if (response.data && response.data.note) {
+        showToastMessage("Note Updated Successfully", "edit");
         getAllNotes();
         onClose();
       }

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { UserInfo } from "../../utils/types";
+import Toast from "../../components/ToastMessage/Toast";
+import EmptyCard from "../../components/EmptyCard";
 
 type Note = {
   _id: string;
@@ -21,7 +23,13 @@ type Note = {
 type ModalState = {
   isShow: boolean;
   type: "add" | "edit";
-  data: Note | null;
+  data?: Note | null;
+};
+
+type ToastState = {
+  isShow: boolean;
+  message: string;
+  type?: "add" | "edit" | "delete";
 };
 
 const Home: React.FC = () => {
@@ -31,11 +39,36 @@ const Home: React.FC = () => {
     data: null
   });
 
+  const [showToastMsg, setShowToastMsg] = useState<ToastState>({
+    isShow: true,
+    message: "",
+    type: undefined
+  });
+
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const navigate = useNavigate();
+
+  // Handle show/close toast
+  const showToastMessage = (
+    message: string,
+    type: "add" | "edit" | "delete"
+  ) => {
+    setShowToastMsg({
+      isShow: true,
+      message,
+      type
+    });
+  };
+
+  const handleCloseToast = () => {
+    setShowToastMsg({
+      isShow: false,
+      message: ""
+    });
+  };
 
   // Handle Edit
   const handleEdit = (noteDetails: Note) => {
@@ -82,6 +115,23 @@ const Home: React.FC = () => {
     }
   };
 
+  // Delete Notes
+  const deleteNotes = async (noteId: string) => {
+    try {
+      const response = await axiosInstance.delete(`/delete-note/${noteId}`);
+
+      if (response.data && !response.data.error) {
+        getAllNotes();
+        showToastMessage("Note deleted successfully", "delete");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      if (err.response && err.response.data && err.response.data.message) {
+        console.error(err.response.data.message);
+      }
+    }
+  };
+
   useEffect(() => {
     getAllNotes();
     getUserInfo();
@@ -92,23 +142,29 @@ const Home: React.FC = () => {
       <Navbar userInfo={userInfo} />
 
       <div className="container mx-auto">
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          {allNotes.map((item) => (
-            <NoteCard
-              key={item._id}
-              title={item.title}
-              content={item.content}
-              date={item.createdOn}
-              tags={item.tags}
-              isPinned={item.isPinned}
-              onEdit={() => {
-                handleEdit(item);
-              }}
-              onDelete={() => {}}
-              onPinNote={() => {}}
-            />
-          ))}
-        </div>
+        {allNotes.length > 0 ? (
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            {allNotes.map((item) => (
+              <NoteCard
+                key={item._id}
+                title={item.title}
+                content={item.content}
+                date={item.createdOn}
+                tags={item.tags}
+                isPinned={item.isPinned}
+                onEdit={() => {
+                  handleEdit(item);
+                }}
+                onDelete={() => {
+                  deleteNotes(item._id);
+                }}
+                onPinNote={() => {}}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyCard />
+        )}
       </div>
 
       <button
@@ -124,7 +180,7 @@ const Home: React.FC = () => {
         isOpen={openAddEditModal.isShow}
         onRequestClose={() =>
           setOpenAddEditModal({ isShow: false, type: "add", data: null })
-        } // ✅ tambahkan handler
+        }
         style={{
           overlay: {
             backgroundColor: "rgba(0,0,0,0.2)"
@@ -140,8 +196,16 @@ const Home: React.FC = () => {
             setOpenAddEditModal({ isShow: false, type: "add", data: null })
           }
           getAllNotes={getAllNotes}
+          showToastMessage={showToastMessage}
         />
       </Modal>
+
+      <Toast
+        isShow={showToastMsg.isShow}
+        message={showToastMsg.message}
+        type={showToastMsg.type}
+        onClose={() => handleCloseToast()}
+      />
     </>
   );
 };
