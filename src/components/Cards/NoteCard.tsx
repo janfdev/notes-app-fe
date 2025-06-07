@@ -37,7 +37,9 @@ const NoteCard = ({
         </div>
         <div
           className={`text-xl text-slate-600 cursor-pointer hover:text-blue-700 hover:border-blue-700 rounded-full border border-slate-600 w-10 h-10 flex items-center justify-center ${
-            isPinned ? "text-blue-500 border-blue-500" : "text-black"
+            isPinned
+              ? "text-blue-500 border-blue-500 bg-blue-200"
+              : "text-black"
           }`}
           onClick={onPinNote}
         >

@@ -136,6 +136,35 @@ const Home: React.FC = () => {
     }
   };
 
+  // Update pin
+  // ubah tipe parameter jadi Note, bukan string | boolean
+  const updatePinned = async (noteData: Note) => {
+    try {
+      const response = await axiosInstance.put(
+        `/update-note-pinned/${noteData._id}`,
+        {
+          isPinned: !noteData.isPinned
+        }
+      );
+
+      if (response.data && !response.data.error) {
+        // Langsung update state lokal
+        setAllNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note._id === noteData._id
+              ? { ...note, isPinned: !noteData.isPinned }
+              : note
+          )
+        );
+
+        showToastMessage("Note updated successfully", "edit");
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      console.error(error);
+    }
+  };
+
   // Search for a note
   const onSearchNote = async (query: string) => {
     try {
@@ -188,7 +217,9 @@ const Home: React.FC = () => {
                 onDelete={() => {
                   deleteNotes(item._id);
                 }}
-                onPinNote={() => {}}
+                onPinNote={() => {
+                  updatePinned(item);
+                }}
               />
             ))}
           </div>
