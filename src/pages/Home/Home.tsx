@@ -11,6 +11,7 @@ import { UserInfo } from "../../utils/types";
 import Toast from "../../components/ToastMessage/Toast";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import noteEmpty from "../../assets/image/note-empty.svg";
+import noData from "../../assets/image/no-data.svg";
 
 type Note = {
   _id: string;
@@ -50,7 +51,7 @@ const Home: React.FC = () => {
 
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-  const [, setIsSearch] = useState<boolean>(false);
+  const [isSearch, setIsSearch] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -152,6 +153,11 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleClearSearch = () => {
+    setIsSearch(false);
+    getAllNotes();
+  };
+
   useEffect(() => {
     getAllNotes();
     getUserInfo();
@@ -159,7 +165,11 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Navbar userInfo={userInfo} onSearchNote={onSearchNote} />
+      <Navbar
+        userInfo={userInfo}
+        onSearchNote={onSearchNote}
+        handleClearSearch={handleClearSearch}
+      />
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
@@ -184,8 +194,12 @@ const Home: React.FC = () => {
           </div>
         ) : (
           <EmptyCard
-            imgSrc={noteEmpty}
-            message={`Start creating your first note! Click the 'Add' button to jot down your toughts, ideas, and reminders, Let's get started!`}
+            imgSrc={isSearch ? noData : noteEmpty}
+            message={
+              isSearch
+                ? `Oops! No notes found matching your search.`
+                : `Start creating your first note! Click the 'Add' button to jot down your toughts, ideas, and reminders, Let's get started!`
+            }
           />
         )}
       </div>
