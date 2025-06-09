@@ -38,13 +38,13 @@ const Home: React.FC = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState<ModalState>({
     isShow: false,
     type: "add",
-    data: null
+    data: null,
   });
 
   const [showToastMsg, setShowToastMsg] = useState<ToastState>({
     isShow: true,
     message: "",
-    type: undefined
+    type: undefined,
   });
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
@@ -65,14 +65,14 @@ const Home: React.FC = () => {
     setShowToastMsg({
       isShow: true,
       message,
-      type
+      type,
     });
   };
 
   const handleCloseToast = () => {
     setShowToastMsg({
       isShow: false,
-      message: ""
+      message: "",
     });
   };
 
@@ -81,7 +81,7 @@ const Home: React.FC = () => {
     setOpenAddEditModal({
       isShow: true,
       data: noteDetails,
-      type: "edit"
+      type: "edit",
     });
   };
 
@@ -145,7 +145,7 @@ const Home: React.FC = () => {
       const response = await axiosInstance.put(
         `/update-note-pinned/${noteData._id}`,
         {
-          isPinned: !noteData.isPinned
+          isPinned: !noteData.isPinned,
         }
       );
 
@@ -163,7 +163,7 @@ const Home: React.FC = () => {
   const onSearchNote = async (query: string) => {
     try {
       const response = await axiosInstance.get("/search-notes", {
-        params: { query }
+        params: { query },
       });
 
       if (response.data && response.data.notes) {
@@ -193,6 +193,8 @@ const Home: React.FC = () => {
         onSearchNote={onSearchNote}
         handleClearSearch={handleClearSearch}
       />
+
+      <h1>cihuy</h1>
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
@@ -245,8 +247,8 @@ const Home: React.FC = () => {
         }
         style={{
           overlay: {
-            backgroundColor: "rgba(0,0,0,0.2)"
-          }
+            backgroundColor: "rgba(0,0,0,0.2)",
+          },
         }}
         contentLabel="Add or Edit Note Modal"
         className="w-[40%] max-h-[90%] rounded-md mx-auto mt-14 p-5 overflow-hidden"
