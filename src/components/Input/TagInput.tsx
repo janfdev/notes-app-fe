@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { MdAdd, MdClose } from "react-icons/md";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 type TagInputProps = {
   tags: string[];
@@ -14,14 +16,16 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
   };
 
   const addNewTag = () => {
-    if (inputValue.trim() !== "") {
-      setTags([...tags, inputValue.trim()]);
+    const trimmed = inputValue.trim();
+    if (trimmed && !tags.includes(trimmed)) {
+      setTags([...tags, trimmed]);
       setInputValue("");
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       addNewTag();
     }
   };
@@ -29,47 +33,42 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
   const handleRemoveTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
+
   return (
-    <div>
-      {tags?.length > 0 && (
-        <div className="flex items-center gap-2 flex-wrap mt-2">
-          {tags.map((tag, index) => (
+    <div className="flex flex-col gap-2">
+      <div className="flex gap-2">
+        <Input
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Add a tag and press Enter"
+          className="flex-2 text-sm px-3 py-2 border rounded-md outline-none"
+        />
+        <Button onClick={addNewTag} type="button">
+          <MdAdd />
+        </Button>
+      </div>
+      {tags.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag, i) => (
             <span
-              key={index}
-              className="relative bg-slate-100 px-3 py-1 rounded-md"
+              key={i}
+              className="relative bg-slate-100 text-sm px-3 py-1 rounded-md"
             >
-              # {tag}
-              <button
-                onClick={() => {
-                  handleRemoveTag(tag);
-                }}
-                className="bg-red-500 absolute -right-2 -top-1 text-white w-4 h-4 flex items-center justify-center rounded-full cursor-pointer"
+              #{tag}
+              <Button
+                variant={"destructive"}
+                type="button"
+                onClick={() => handleRemoveTag(tag)}
+                className="p-2 absolute -top-2 -right-2 text-white w-4 h-4 flex items-center justify-center rounded-full"
               >
-                <MdClose />
-              </button>
+                <MdClose className="text-xs" />
+              </Button>
             </span>
           ))}
         </div>
       )}
-      <div className="flex items-center gap-4 mt-3">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          className="text-sm px-3 py-2 bg-transparent border rounded outline-none"
-          placeholder="Add tags"
-          onKeyDown={handleKeyDown}
-        />
-
-        <button
-          onClick={() => {
-            addNewTag();
-          }}
-          className="w-8 h-8 flex items-center justify-center rounded  border border-blue-700 hover:bg-blue-700"
-        >
-          <MdAdd className="text-2xl text-blue-700 hover:text-white" />
-        </button>
-      </div>
     </div>
   );
 };

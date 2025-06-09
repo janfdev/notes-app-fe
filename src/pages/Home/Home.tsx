@@ -12,6 +12,7 @@ import Toast from "../../components/ToastMessage/Toast";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import noteEmpty from "../../assets/image/note-empty.svg";
 import noData from "../../assets/image/no-data.svg";
+import { ModalAddNotes } from "@/components/ModalAddNotes";
 
 type Note = {
   _id: string;
@@ -194,8 +195,6 @@ const Home: React.FC = () => {
         handleClearSearch={handleClearSearch}
       />
 
-      <h1>cihuy</h1>
-
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
           <div className="grid grid-cols-3 gap-4 mt-8">
@@ -231,7 +230,12 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      <button
+
+      <div className="absolute right-5 bottom-10">
+        <ModalAddNotes type="add"/>
+      </div>
+
+      {/* <button
         className="w-16 h-16 flex items-center justify-center rounded-2xl bg-blue-500 hover:bg-blue-700 absolute right-5 bottom-10"
         onClick={() =>
           setOpenAddEditModal({ isShow: true, type: "add", data: null })
@@ -262,7 +266,7 @@ const Home: React.FC = () => {
           getAllNotes={getAllNotes}
           showToastMessage={showToastMessage}
         />
-      </Modal>
+      </Modal> */}
 
       <Toast
         isShow={showToastMsg.isShow}
