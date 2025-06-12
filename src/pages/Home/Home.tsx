@@ -193,7 +193,7 @@ const Home: React.FC = () => {
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
-          <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-8">
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mt-8">
             {allNotes.map((item) => (
               <NoteCard
                 key={item._id}
@@ -246,39 +246,6 @@ const Home: React.FC = () => {
           <MdAdd className="size-6" />
         </Button>
       </div>
-
-      {/* <button
-        className="w-16 h-16 flex items-center justify-center rounded-2xl bg-blue-500 hover:bg-blue-700 absolute right-5 bottom-10"
-        onClick={() =>
-          setOpenAddEditModal({ isShow: true, type: "add", data: null })
-        }
-      >
-        <MdAdd className="text-[32px] text-white" />
-      </button>
-
-      <Modal
-        isOpen={openAddEditModal.isShow}
-        onRequestClose={() =>
-          setOpenAddEditModal({ isShow: false, type: "add", data: null })
-        }
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0,0,0,0.2)",
-          },
-        }}
-        contentLabel="Add or Edit Note Modal"
-        className="w-[40%] max-h-[90%] rounded-md mx-auto mt-14 p-5 overflow-hidden"
-      >
-        <AddEditNotes
-          type={openAddEditModal.type}
-          noteData={openAddEditModal.data}
-          onClose={() =>
-            setOpenAddEditModal({ isShow: false, type: "add", data: null })
-          }
-          getAllNotes={getAllNotes}
-          showToastMessage={showToastMessage}
-        />
-      </Modal> */}
 
       <Toast
         isShow={showToastMsg.isShow}

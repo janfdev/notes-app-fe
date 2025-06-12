@@ -3,6 +3,12 @@ import moment from "moment";
 import { Button } from "../ui/button";
 import { CiStar } from "react-icons/ci";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+
+import {
   Card,
   CardContent,
   CardDescription,
@@ -11,6 +17,9 @@ import {
   CardTitle
 } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { TooltipDesc } from "../ui/tooltipDesc";
+import ConfirmDeleteDialog from "../Dialogs/AlertDeleteDialog";
+import { useState } from "react";
 
 type NoteCardProps = {
   title: string;
@@ -33,15 +42,16 @@ const NoteCard = ({
   onDelete,
   onPinNote
 }: NoteCardProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <Card className="border rounded-md p-4 bg-white hover:shadow-2xl transition-all ease-in-out">
+    <Card className="border rounded-md  md:mx-0 mx-5 bg-white  hover:shadow-2xl transition-all ease-in-out">
       <CardHeader
         className="flex items-center justify-between
       "
       >
         <div>
-          <CardTitle className="font-poppins text-lg capitalize">
-            {title}
+          <CardTitle className="font-poppins text-lg capitalize text-wrap line-clamp-3">
+            {title?.slice(0, 25)}
           </CardTitle>
           <CardDescription className="text-xs capitalize text-gray-500">
             {moment(date).fromNow()} • {moment(date).format("DD MMM YYYY")}
@@ -72,13 +82,42 @@ const NoteCard = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant={"default"} onClick={onEdit}>
-            <MdCreate />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={"default"}
+                onClick={onEdit}
+                className="cursor-pointer
+              "
+              >
+                <MdCreate />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Edit Note</p>
+            </TooltipContent>
+          </Tooltip>
 
-          <Button variant={"destructive"} onClick={onDelete}>
-            <MdDelete />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="destructive" onClick={() => setIsOpen(true)}>
+                <MdDelete />
+              </Button>
+            </TooltipTrigger>
+            <TooltipDesc>
+              <p>Delete Note</p>
+            </TooltipDesc>
+          </Tooltip>
+
+          <ConfirmDeleteDialog
+            isOpen={isOpen}
+            openChange={setIsOpen}
+            onConfirm={onDelete}
+          >
+            {/* <Button variant="destructive" className="z-99">
+              <MdDelete />
+            </Button> */}
+          </ConfirmDeleteDialog>
         </div>
       </CardFooter>
     </Card>

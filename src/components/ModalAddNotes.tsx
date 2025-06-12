@@ -38,22 +38,29 @@ export function ModalAddNotes({
   isOpen,
   setIsOpen
 }: ModalProps) {
-  const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const resetForm = () => {
+    setTitle("");
+    setContent("");
+    setTags([]);
+    setError(null);
+  };
+
   useEffect(() => {
-    if (noteData) {
-      setTitle(noteData.title);
-      setContent(noteData.content);
-      setTags(noteData.tags);
-    } else {
-      setTitle("");
-      setContent("");
-      setTags([]);
+    if (isOpen) {
+      if (type === "edit" && noteData) {
+        setTitle(noteData.title);
+        setContent(noteData.content);
+        setTags(noteData.tags);
+      } else {
+        resetForm();
+      }
     }
-  }, [noteData]);
+  }, [isOpen, type, noteData]);
 
   const handleSubmit = async () => {
     if (!title || !content) {
