@@ -1,9 +1,7 @@
 import { MdAdd } from "react-icons/md";
 import NoteCard from "../../components/Cards/NoteCard";
 import Navbar from "../../components/Navbar";
-import AddEditNotes from "./AddEditNotes";
 import { useEffect, useState } from "react";
-import Modal from "react-modal";
 import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
@@ -13,6 +11,7 @@ import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import noteEmpty from "../../assets/image/note-empty.svg";
 import noData from "../../assets/image/no-data.svg";
 import { ModalAddNotes } from "@/components/ModalAddNotes";
+import { Button } from "@/components/ui/button";
 
 type Note = {
   _id: string;
@@ -39,13 +38,13 @@ const Home: React.FC = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState<ModalState>({
     isShow: false,
     type: "add",
-    data: null,
+    data: null
   });
 
   const [showToastMsg, setShowToastMsg] = useState<ToastState>({
     isShow: true,
     message: "",
-    type: undefined,
+    type: undefined
   });
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
@@ -66,14 +65,14 @@ const Home: React.FC = () => {
     setShowToastMsg({
       isShow: true,
       message,
-      type,
+      type
     });
   };
 
   const handleCloseToast = () => {
     setShowToastMsg({
       isShow: false,
-      message: "",
+      message: ""
     });
   };
 
@@ -82,14 +81,14 @@ const Home: React.FC = () => {
     setOpenAddEditModal({
       isShow: true,
       data: noteDetails,
-      type: "edit",
+      type: "edit"
     });
   };
 
   // Get user info
   const getUserInfo = async () => {
     try {
-      const response = await axiosInstance.get("/get-user");
+      const response = await axiosInstance.get("/users/me");
       if (response.data && response.data.user) {
         setUserInfo(response.data.user);
       }
@@ -112,7 +111,7 @@ const Home: React.FC = () => {
   // Get all notes
   const getAllNotes = async () => {
     try {
-      const response = await axiosInstance.get("/get-all-notes");
+      const response = await axiosInstance.get("/notes/");
 
       if (response.data && response.data.notes) {
         setAllNotes(response.data.notes);
@@ -125,7 +124,7 @@ const Home: React.FC = () => {
   // Delete Notes
   const deleteNotes = async (noteId: string) => {
     try {
-      const response = await axiosInstance.delete(`/delete-note/${noteId}`);
+      const response = await axiosInstance.delete(`/notes/${noteId}`);
 
       if (response.data && !response.data.error) {
         getAllNotes();
@@ -143,12 +142,9 @@ const Home: React.FC = () => {
   // ubah tipe parameter jadi Note, bukan string | boolean
   const updatePinned = async (noteData: Note) => {
     try {
-      const response = await axiosInstance.put(
-        `/update-note-pinned/${noteData._id}`,
-        {
-          isPinned: !noteData.isPinned,
-        }
-      );
+      const response = await axiosInstance.patch(`notes/${noteData._id}/pin`, {
+        isPinned: !noteData.isPinned
+      });
 
       if (response.data && !response.data.error) {
         setRefreshTrigger((prev) => prev + 1);
@@ -163,8 +159,8 @@ const Home: React.FC = () => {
   // Search for a note
   const onSearchNote = async (query: string) => {
     try {
-      const response = await axiosInstance.get("/search-notes", {
-        params: { query },
+      const response = await axiosInstance.get("/notes/search", {
+        params: { query }
       });
 
       if (response.data && response.data.notes) {
@@ -197,7 +193,7 @@ const Home: React.FC = () => {
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 mt-8">
+          <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-8">
             {allNotes.map((item) => (
               <NoteCard
                 key={item._id}
@@ -230,9 +226,25 @@ const Home: React.FC = () => {
         )}
       </div>
 
+      <ModalAddNotes
+        isOpen={openAddEditModal.isShow}
+        setIsOpen={(open) =>
+          setOpenAddEditModal((prev) => ({ ...prev, isShow: open }))
+        }
+        type={openAddEditModal.type}
+        noteData={openAddEditModal.data}
+        getAllNotes={getAllNotes}
+      />
 
-      <div className="absolute right-5 bottom-10">
-        <ModalAddNotes type="add"/>
+      <div className="m-4 fixed right-5 bottom-3 z-40">
+        <Button
+          size={"big"}
+          onClick={() =>
+            setOpenAddEditModal({ isShow: true, type: "add", data: null })
+          }
+        >
+          <MdAdd className="size-6" />
+        </Button>
       </div>
 
       {/* <button

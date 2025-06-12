@@ -58,12 +58,11 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
             >
               #{tag}
               <Button
-                variant={"destructive"}
                 type="button"
                 onClick={() => handleRemoveTag(tag)}
-                className="p-2 absolute -top-2 -right-2 text-white w-4 h-4 flex items-center justify-center rounded-full"
+                className=" absolute -top-2 text-white -right-2 w-4 h-6 flex items-center justify-center rounded-full"
               >
-                <MdClose className="text-xs" />
+                <MdClose className="text-[4px]" />
               </Button>
             </span>
           ))}

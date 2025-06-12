@@ -1,7 +1,15 @@
 import { HiOutlineLogout } from "react-icons/hi";
 import { UserInfo } from "../../utils/types";
 
-
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 type ProfileInfoProps = {
   onLogout: () => void;
@@ -18,20 +26,36 @@ const ProfileInfo = ({ userInfo, onLogout }: ProfileInfoProps) => {
   };
 
   return (
-    <div className="flex items-center justify-between space-x-5">
-      <span className="uppercase bg-blue-700 w-8 h-8 flex items-center justify-center text-white rounded-full">
-        {handleInitials(userInfo.fullName)}
-      </span>
-      <div className="flex items-center gap-x-3">
-        <p className="capitalize text-[15px]">{userInfo.fullName}</p>
-        <button
-          onClick={onLogout}
-          className="bg-red-500 flex items-center justify-center text-white text-xl p-2 rounded-md"
-        >
-          <HiOutlineLogout />
-        </button>
-      </div>
-    </div>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className="uppercase w-8 h-8 flex items-center justify-center rounded-full">
+            {handleInitials(userInfo.fullName)}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>User Info</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuCheckboxItem>
+            <h3 className="capitalize text-[15px] font-bold">
+              {userInfo.fullName}
+            </h3>
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem>
+            <p className=" text-[15px] font-bold">{userInfo.email}</p>
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem>
+            <button
+              onClick={onLogout}
+              className="bg-red-500 cursor-pointer flex items-center justify-between w-full text-white p-3 rounded-md"
+            >
+              <p className="text-sm">Logout</p>
+              <HiOutlineLogout size={24} />
+            </button>
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };
 

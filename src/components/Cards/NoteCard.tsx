@@ -1,7 +1,7 @@
-import { BsPinAngleFill } from "react-icons/bs";
 import { MdCreate, MdDelete } from "react-icons/md";
 import moment from "moment";
 import { Button } from "../ui/button";
+import { CiStar } from "react-icons/ci";
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle
 } from "../ui/card";
+import { Badge } from "../ui/badge";
 
 type NoteCardProps = {
   title: string;
@@ -42,21 +43,20 @@ const NoteCard = ({
           <CardTitle className="font-poppins text-lg capitalize">
             {title}
           </CardTitle>
-          <CardDescription className="text-xs text-gray-500">
-            {moment(date).format("DD MMMM YYYY")}
+          <CardDescription className="text-xs capitalize text-gray-500">
+            {moment(date).fromNow()} • {moment(date).format("DD MMM YYYY")}
           </CardDescription>
         </div>
-        <Button
-          variant={"secondary"}
-          className={`text-xl text-slate-600 cursor-pointer hover:text-blue-700 hover:border-blue-700 rounded-full border border-slate-600 w-10 h-10 flex items-center justify-center ${
+        <button
+          className={`text-xl text-slate-600 cursor-pointer rounded-full border border-slate-600 w-10 h-10 flex items-center justify-center ${
             isPinned
-              ? "text-blue-500 border-blue-500 bg-blue-200"
-              : "text-black"
+              ? "text-yellow-500 fill-yellow-400 border-yellow-500 bg-yellow-200"
+              : "text-black border-black hover:text-yellow-500 hover:border-yellow-500"
           }`}
           onClick={onPinNote}
         >
-          <BsPinAngleFill className="text-lg" />
-        </Button>
+          <CiStar className="size-6" />
+        </button>
       </CardHeader>
 
       <CardContent className="text-wrap capitalize text-xs text-slate-600 mt-2">
@@ -65,9 +65,9 @@ const NoteCard = ({
       <CardFooter className="flex items-center justify-between mt-2">
         <div className="flex gap-2 flex-wrap">
           {tags.map((tag, index) => (
-            <Button variant={"outline"} key={index}>
+            <Badge variant={"outline"} key={index}>
               #{tag}
-            </Button>
+            </Badge>
           ))}
         </div>
 

@@ -35,7 +35,7 @@ const AddEditNotes = ({
   // Add Note
   const addNewNote = async () => {
     try {
-      const response = await axiosInstance.post("/add-note", {
+      const response = await axiosInstance.post("/notes", {
         title,
         content,
         tags
@@ -62,7 +62,7 @@ const AddEditNotes = ({
   const editNote = async () => {
     const noteId = noteData?._id;
     try {
-      const response = await axiosInstance.put(`/edit-note/${noteId}`, {
+      const response = await axiosInstance.put(`/notes/${noteId}`, {
         title,
         content,
         tags

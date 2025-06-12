@@ -3,6 +3,7 @@ import { useState } from "react";
 import ProfileInfo from "./Cards/ProfileInfo";
 import SearchBar from "./SearchBar/SearchBar";
 import { UserInfo } from "../utils/types";
+import logo from "../../src/assets/image/logo.svg";
 
 type NavbarProps = {
   userInfo: UserInfo | null;
@@ -31,7 +32,15 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }: NavbarProps) => {
   };
   return (
     <nav className="bg-white flex items-center justify-between px-6 py-2 drop-shadow">
-      <h2 className="text-xl font-medium text-black py-2">Notes</h2>
+      <span className="flex items-center gap-4">
+        <img src={logo} alt="" className="md:w-full w-7" />
+        <h2 className="text-xl font-medium md:block hidden text-black py-2">
+          Nts
+          <span className="bg-gradient-to-r from-orange-500 via-indigo-500 to-green-500 text-transparent bg-clip-text">
+            Free
+          </span>
+        </h2>
+      </span>
       <SearchBar
         value={searchQuery}
         onChange={({ target }) => {
