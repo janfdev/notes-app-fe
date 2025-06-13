@@ -10,13 +10,14 @@ import {
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { ReactNode } from "react";
+import { Delete } from "./Delete";
 
 type ConfirmDeleteDialogProps = {
   children: ReactNode;
   title?: string;
   description?: string;
   onConfirm: () => void;
-   isOpen: boolean;
+  isOpen: boolean;
   openChange: (open: boolean) => void;
 };
 
@@ -33,12 +34,22 @@ const ConfirmDeleteDialog = ({
       <AlertDialogTrigger>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
+          <div className="flex items-center justify-center">
+            <div className="bg-red-500 w-20 text-center flex items-center justify-center rounded-md">
+              <Delete />
+            </div>
+          </div>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>Delete</AlertDialogAction>
+          <AlertDialogAction
+            onClick={onConfirm}
+            className="bg-red-500 text-white hover:bg-red-700"
+          >
+            Delete
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

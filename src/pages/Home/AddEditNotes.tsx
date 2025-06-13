@@ -3,6 +3,7 @@ import TagInput from "../../components/Input/TagInput";
 import { useState } from "react";
 import { AxiosError } from "axios";
 import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "sonner";
 
 type NoteData = {
   _id: string;
@@ -44,6 +45,7 @@ const AddEditNotes = ({
       if (response.data && response.data.note) {
         showToastMessage("Note Added Successfully", "add");
         getAllNotes();
+        toast.success("Note Added Successfully");
         onClose();
       }
     } catch (err) {
@@ -71,7 +73,6 @@ const AddEditNotes = ({
       if (response.data && response.data.note) {
         showToastMessage("Note Updated Successfully", "edit");
         getAllNotes();
-        onClose();
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;

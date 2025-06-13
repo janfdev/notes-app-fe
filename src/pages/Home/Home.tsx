@@ -6,12 +6,12 @@ import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { UserInfo } from "../../utils/types";
-import Toast from "../../components/ToastMessage/Toast";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import noteEmpty from "../../assets/image/note-empty.svg";
 import noData from "../../assets/image/no-data.svg";
 import { ModalAddNotes } from "@/components/ModalAddNotes";
 import { Button } from "@/components/ui/button";
+import { toast, Toaster } from "sonner";
 
 type Note = {
   _id: string;
@@ -28,11 +28,11 @@ type ModalState = {
   data?: Note | null;
 };
 
-type ToastState = {
-  isShow: boolean;
-  message: string;
-  type?: "add" | "edit" | "delete";
-};
+// type ToastState = {
+//   isShow: boolean;
+//   message: string;
+//   type?: "add" | "edit" | "delete";
+// };
 
 const Home: React.FC = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState<ModalState>({
@@ -41,11 +41,11 @@ const Home: React.FC = () => {
     data: null
   });
 
-  const [showToastMsg, setShowToastMsg] = useState<ToastState>({
-    isShow: true,
-    message: "",
-    type: undefined
-  });
+  // const [showToastMsg, setShowToastMsg] = useState<ToastState>({
+  //   isShow: true,
+  //   message: "",
+  //   type: undefined
+  // });
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
@@ -58,23 +58,23 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   // Handle show/close toast
-  const showToastMessage = (
-    message: string,
-    type: "add" | "edit" | "delete"
-  ) => {
-    setShowToastMsg({
-      isShow: true,
-      message,
-      type
-    });
-  };
+  // const showToastMessage = (
+  //   message: string,
+  //   type: "add" | "edit" | "delete"
+  // ) => {
+  //   setShowToastMsg({
+  //     isShow: true,
+  //     message,
+  //     type
+  //   });
+  // };
 
-  const handleCloseToast = () => {
-    setShowToastMsg({
-      isShow: false,
-      message: ""
-    });
-  };
+  // const handleCloseToast = () => {
+  //   setShowToastMsg({
+  //     isShow: false,
+  //     message: ""
+  //   });
+  // };
 
   // Handle Edit
   const handleEdit = (noteDetails: Note) => {
@@ -128,7 +128,7 @@ const Home: React.FC = () => {
 
       if (response.data && !response.data.error) {
         getAllNotes();
-        showToastMessage("Note deleted successfully", "delete");
+        toast.error("Deleted Successfully");
       }
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
@@ -148,7 +148,12 @@ const Home: React.FC = () => {
 
       if (response.data && !response.data.error) {
         setRefreshTrigger((prev) => prev + 1);
-        showToastMessage("Note updated successfully", "edit");
+
+        if (noteData.isPinned) {
+          toast.success("Note Unpinned");
+        } else {
+          toast.success("Note Pinned");
+        }
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -225,7 +230,7 @@ const Home: React.FC = () => {
           />
         )}
       </div>
-
+      <Toaster />
       <ModalAddNotes
         isOpen={openAddEditModal.isShow}
         setIsOpen={(open) =>
@@ -247,12 +252,12 @@ const Home: React.FC = () => {
         </Button>
       </div>
 
-      <Toast
+      {/* <Toast
         isShow={showToastMsg.isShow}
         message={showToastMsg.message}
         type={showToastMsg.type}
         onClose={() => handleCloseToast()}
-      />
+      /> */}
     </>
   );
 };

@@ -33,7 +33,7 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }: NavbarProps) => {
   return (
     <nav className="bg-white flex items-center justify-between px-6 py-2 drop-shadow top-0 sticky z-30">
       <span className="flex items-center gap-4">
-        <img src={logo} alt="" className="md:w-full w-7" />
+        <img src={logo} alt="" className="md:w-[30px] w-[27px]" />
         <h2 className="text-xl font-medium md:block hidden text-black py-2">
           Nts
           <span className="bg-gradient-to-r from-orange-500 via-indigo-500 to-green-500 text-transparent bg-clip-text">

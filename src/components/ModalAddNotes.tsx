@@ -15,6 +15,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import TagInput from "./Input/TagInput";
+import { toast } from "sonner";
 
 type NoteData = {
   _id: string;
@@ -75,12 +76,15 @@ export function ModalAddNotes({
           content,
           tags
         });
+
+        toast.success("Note Updated Successfully");
       } else {
         await axiosInstance.post("/notes", {
           title,
           content,
           tags
         });
+        toast.success("Note Added Successfully");
       }
 
       getAllNotes();
