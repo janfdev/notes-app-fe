@@ -28,24 +28,12 @@ type ModalState = {
   data?: Note | null;
 };
 
-// type ToastState = {
-//   isShow: boolean;
-//   message: string;
-//   type?: "add" | "edit" | "delete";
-// };
-
 const Home: React.FC = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState<ModalState>({
     isShow: false,
     type: "add",
     data: null
   });
-
-  // const [showToastMsg, setShowToastMsg] = useState<ToastState>({
-  //   isShow: true,
-  //   message: "",
-  //   type: undefined
-  // });
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
@@ -56,25 +44,6 @@ const Home: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
   const navigate = useNavigate();
-
-  // Handle show/close toast
-  // const showToastMessage = (
-  //   message: string,
-  //   type: "add" | "edit" | "delete"
-  // ) => {
-  //   setShowToastMsg({
-  //     isShow: true,
-  //     message,
-  //     type
-  //   });
-  // };
-
-  // const handleCloseToast = () => {
-  //   setShowToastMsg({
-  //     isShow: false,
-  //     message: ""
-  //   });
-  // };
 
   // Handle Edit
   const handleEdit = (noteDetails: Note) => {
@@ -186,7 +155,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     getAllNotes();
     getUserInfo();
-  }, [refreshTrigger]); // ✅ tambahkan dependency array
+  }, [refreshTrigger]);
 
   return (
     <>
