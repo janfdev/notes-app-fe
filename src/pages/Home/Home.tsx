@@ -2,6 +2,8 @@ import { MdAdd } from "react-icons/md";
 import NoteCard from "../../components/Cards/NoteCard";
 import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import axiosInstance from "../../utils/axiosInstance";
 import axios, { AxiosError } from "axios";
@@ -11,7 +13,6 @@ import noteEmpty from "../../assets/image/note-empty.svg";
 import noData from "../../assets/image/no-data.svg";
 import { ModalAddNotes } from "@/components/ModalAddNotes";
 import { Button } from "@/components/ui/button";
-import { toast, Toaster } from "sonner";
 
 type Note = {
   _id: string;
@@ -119,7 +120,17 @@ const Home: React.FC = () => {
         setRefreshTrigger((prev) => prev + 1);
 
         if (noteData.isPinned) {
-          toast.success("Note Unpinned");
+          toast.success("Note Unpinned", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce
+          });
         } else {
           toast.success("Note Pinned");
         }
@@ -199,7 +210,19 @@ const Home: React.FC = () => {
           />
         )}
       </div>
-      <Toaster />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <ModalAddNotes
         isOpen={openAddEditModal.isShow}
         setIsOpen={(open) =>
