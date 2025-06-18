@@ -15,7 +15,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import TagInput from "./Input/TagInput";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 type NoteData = {
   _id: string;
@@ -76,7 +76,6 @@ export function ModalAddNotes({
           content,
           tags
         });
-
         toast.success("Note Updated Successfully");
       } else {
         await axiosInstance.post("/notes", {
@@ -91,58 +90,61 @@ export function ModalAddNotes({
       setIsOpen(false);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || "Something went wrong");
       setError(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            {type === "edit" ? "Edit Note" : "Add Note"}
-          </DialogTitle>
-          <DialogDescription>
-            {type === "edit"
-              ? "Update your existing note."
-              : "Add a new note to your collection."}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              value={title}
-              placeholder="Input your notes"
-              onChange={(e) => setTitle(e.target.value)}
-            />
+    <>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {type === "edit" ? "Edit Note" : "Add Note"}
+            </DialogTitle>
+            <DialogDescription>
+              {type === "edit"
+                ? "Update your existing note."
+                : "Add a new note to your collection."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={title}
+                placeholder="Input your notes"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="content">Content</Label>
+              <Textarea
+                id="content"
+                value={content}
+                placeholder="Input your content here"
+                rows={6}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Tags</Label>
+              <TagInput tags={tags} setTags={setTags} />
+            </div>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="content">Content</Label>
-            <Textarea
-              id="content"
-              value={content}
-              placeholder="Input your content here"
-              rows={6}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label>Tags</Label>
-            <TagInput tags={tags} setTags={setTags} />
-          </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-        </div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button onClick={handleSubmit}>
-            {type === "edit" ? "Update" : "Add"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleSubmit}>
+              {type === "edit" ? "Update" : "Add"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

@@ -114,9 +114,7 @@ const NoteCard = ({
             openChange={setIsOpen}
             onConfirm={onDelete}
           >
-            {/* <Button variant="destructive" className="z-99">
-              <MdDelete />
-            </Button> */}
+          
           </ConfirmDeleteDialog>
         </div>
       </CardFooter>
