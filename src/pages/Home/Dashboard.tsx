@@ -28,11 +28,11 @@ type ModalState = {
   data?: Note | null;
 };
 
-const Home: React.FC = () => {
+const Dashboard: React.FC = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState<ModalState>({
     isShow: false,
     type: "add",
-    data: null
+    data: null,
   });
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
@@ -50,7 +50,7 @@ const Home: React.FC = () => {
     setOpenAddEditModal({
       isShow: true,
       data: noteDetails,
-      type: "edit"
+      type: "edit",
     });
   };
 
@@ -67,7 +67,7 @@ const Home: React.FC = () => {
         if (err.response?.data?.message) {
           console.error(err.response.data.message);
           localStorage.clear();
-          navigate("/login");
+          navigate("/");
         } else {
           console.error(
             "An unexpected error occurred while fetching user info."
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
   const updatePinned = async (noteData: Note) => {
     try {
       const response = await axiosInstance.patch(`notes/${noteData._id}/pin`, {
-        isPinned: !noteData.isPinned
+        isPinned: !noteData.isPinned,
       });
 
       if (response.data && !response.data.error) {
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
   const onSearchNote = async (query: string) => {
     try {
       const response = await axiosInstance.get("/notes/search", {
-        params: { query }
+        params: { query },
       });
 
       if (response.data && response.data.notes) {
@@ -235,4 +235,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Dashboard;
