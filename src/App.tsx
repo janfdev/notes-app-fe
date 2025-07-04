@@ -1,11 +1,11 @@
-import Dashboard from "./pages/Home/Dashboard";
+import Dashboard from "./pages/Dashboard User/Dashboard";
 import { Route, Routes } from "react-router";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import ProtectedRoute from "./utils/protectedRoute";
 import ErrorPage from "./pages/Error/ErrorPage";
 import { UserProvider } from "./context/UserContext";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 
 const App = () => {
   return (
