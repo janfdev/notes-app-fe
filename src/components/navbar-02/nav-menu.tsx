@@ -12,12 +12,12 @@ export const NavMenu = (props: NavigationMenuProps) => (
     <div className="gap-6 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
       <div className="flex md:flex-row flex-col">
         <div>
-          <a href="#">
+          <a href="#features">
             <Button variant={"link"}>Features</Button>
           </a>
         </div>
         <div>
-          <a href="#">
+          <a href="#how-it-works">
             <Button variant={"link"}>How it Works</Button>
           </a>
         </div>
