@@ -60,13 +60,15 @@ const Dashboard: React.FC = () => {
       const response = await axiosInstance.get("/users/me");
       if (response.data && response.data.user) {
         setUserInfo(response.data.user);
+        console.log("User response", response.data.user);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ message: string }>;
         if (err.response?.data?.message) {
           console.error(err.response.data.message);
-          localStorage.clear();
+          console.log("User response", err);
+          // localStorage.clear();
           navigate("/");
         } else {
           console.error(

@@ -4,6 +4,7 @@ import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const NavbarHomePage = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -38,10 +39,14 @@ const NavbarHomePage = () => {
           <NavMenu className="hidden md:block" />
 
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="hidden sm:inline-flex">
-              Sign In
-            </Button>
-            <Button>Sign Up</Button>
+            <Link to="/login">
+              <Button variant="outline" className="hidden sm:inline-flex">
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button>Sign Up</Button>
+            </Link>
             <Button size="icon" variant="outline" onClick={toggleDarkMode}>
               {darkMode ? <MoonIcon /> : <SunIcon />}
             </Button>

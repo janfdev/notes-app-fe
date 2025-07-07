@@ -36,10 +36,10 @@ const SignUp = () => {
     // Sign Up API Call
 
     try {
-      const response = await axiosInstance.post("/users/register", {
+      const response = await axiosInstance.post("/auth/register", {
         fullName: name,
         email: email,
-        password: password
+        password: password,
       });
 
       // Handle successfull registration
